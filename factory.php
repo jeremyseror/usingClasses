@@ -13,9 +13,12 @@ class AbstractCar
     protected $numberOfDoors;
     protected $color;
 
-    public static $validColors = array('red', 'green', 'blue', 'white', 'black');
+    public static $validColors = array('red', 'green', 'blue', 'white', 'black', 'pink', 'yellow');
     public static $validNumberOfDoors = array('2', '3', '4', '5');
     public static $validCarType = array('sports', 'mini', 'suv');
+    public static $validCars = array('SportsCar', 'MiniCar', 'SUVCar');
+    public static $minimumDoors = 2;
+    public static $maximumDoors = 5;
 
     function __construct($type, $color, $doors)
     {
@@ -76,9 +79,18 @@ class AbstractCar
 
     public function showCar()
     {
-        echo "type: " . $this->getCarType() . "\n";
-        echo "color: " . $this->getColor() . "\n";
-        echo "doors: " . $this->getNumberOfDoors() . "\n";
+        echo "  type: " . $this->getCarType() . "\n";
+        echo "  color: " . $this->getColor() . "\n";
+        echo "  doors: " . $this->getNumberOfDoors() . "\n";
+    }
+
+    public function start($display = true)
+    {
+        if ($display) {
+            echo "starting car " . $this->getCarType() . "\n";
+            $this->showCar();
+        }
+
     }
 }
 
@@ -108,11 +120,54 @@ class SUVCar extends AbstractCar
     }
 }
 
-$sports = new SportsCar("red", "2");
-$sports->showCar();
+class CarFactory
+{
+
+    public $cars = array();
+
+    protected $numberOfCars;
+
+    function __construct($numberOfCars = 10, $display = true)
+    {
+        $this->numberOfCars = $numberOfCars;
+        if ($display)
+            echo "creating " . $this->numberOfCars . " cars\n";
+    }
+
+    public function start($display = false)
+    {
+        $carCount = array();
+
+        echo "starting factory....\n";
+
+        for ($i = 0; $i < $this->numberOfCars; $i++) {
+            $randomCarIndex = rand(0, count(AbstractCar::$validCars) - 1);
+            $randomColorIndex = rand(0, count(AbstractCar::$validColors) - 1);
+            $randomDoors = rand(AbstractCar::$minimumDoors, AbstractCar::$maximumDoors);
+
+            $carClassName = AbstractCar::$validCars[$randomCarIndex];
+            $carColor = AbstractCar::$validColors[$randomColorIndex];
+
+            if ($display)
+                echo "  making car " . $i . " - " . $carClassName . "\n";
+
+            array_push($this->cars, new $carClassName($carColor, $randomDoors));
+            $carCount[$carClassName][$carColor][$randomDoors]++;
+
+        }
+
+        foreach ($this->cars as $index => $car) {
+            $car->start(false);
+        }
+
+        print_r($carCount);
+        echo "Total cars ".count($this->cars)."\n";
+
+    }
 
 
-$mini = new MiniCar("4", "green");
-$mini->showCar();
+}
 
+$factory = new CarFactory(10,false);
+$factory->start();
 
