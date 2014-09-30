@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: jeremyseror
@@ -7,14 +8,19 @@
  *
  * Adding Marc
  */
-class AbstractCar {
+
+class AbstractCar
+{
+
     protected $carType;
     protected $numberOfDoors;
     protected $color;
 
     public function setCarType($type)
     {
-        $this->carType=$type;
+
+        $this->carType = $type;
+
     }
 
     public function getCarType()
@@ -24,22 +30,31 @@ class AbstractCar {
 
     public function setNumberOfDoors($numberOfDoors)
     {
+
         $this->numberOfDoors=$numberOfDoors;
     }
+
     public function getColor()
     {
         return $this->color;
+
+    }
+
+    public function getNumberOfDoors()
+    {
+        return $this->numberOfDoors;
+
     }
 
     public function setColor($color)
     {
+
         $this->color=$color;
     }
-    public function getNumberOfDoors()
-    {
-        return $this->numberOfDoors;
-    }
+
+
 }
+
 
 $sportsCar = new AbstractCar();
 
@@ -68,3 +83,15 @@ $sportsCarBlackTwoDoors->setNumberOfDoors("2");
 echo $sportsCarBlackTwoDoors->getCarType() ."\n";
 echo $sportsCarBlackTwoDoors->getColor()."\n";
 echo $sportsCarBlackTwoDoors->getNumberOfDoors()."\n";
+
+$sportsCar->setNumberOfDoors(2);
+
+echo "type: ".$sportsCar->getCarType() . "\n";
+echo "doors: ".$sportsCar->getNumberOfDoors() . "\n";
+echo "color: ".$sportsCar->getColor() . "\n";
+
+
+
+
+$myCar = new SportsCar("red","2");
+
